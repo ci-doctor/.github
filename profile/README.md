@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/ci-doctor/ci-doctor/master/docs/site/public/ci-doctor-icon.svg" width="64" alt="ci-doctor" />
+<img src="https://raw.githubusercontent.com/ci-doctor/.github/main/profile/ci-doctor-icon-dark.svg" width="64" alt="ci-doctor" />
 
 # ci-doctor
 
