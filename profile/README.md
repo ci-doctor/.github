@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/ci-doctor/.github/main/profile/ci-doctor-icon-dark.svg" width="64" alt="ci-doctor" />
-
-# ci-doctor
+<img src="https://raw.githubusercontent.com/ci-doctor/.github/main/profile/ci-doctor-logo-dark.svg" width="400" alt="ci-doctor" />
 
 **Bringing the agentic loop to CI/CD.**
 
