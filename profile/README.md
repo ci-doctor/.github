@@ -2,9 +2,9 @@
 
 <img src="https://raw.githubusercontent.com/ci-doctor/.github/main/profile/ci-doctor-logo-dark.svg" width="400" alt="ci-doctor" />
 
-**Bringing the agentic loop to CI/CD.**
+**Root-cause analysis for CI/CD.**
 
-[Docs](https://docs.cidoc.dev) · [Get started](https://docs.cidoc.dev/start/) · [support@cidoc.dev](mailto:support@cidoc.dev)
+[Docs](https://docs.cidoc.dev) · [Get started](https://docs.cidoc.dev/start/) · [Matchers](https://matchers.cidoc.dev) · [support@cidoc.dev](mailto:support@cidoc.dev)
 
 </div>
 
@@ -12,36 +12,50 @@
 
 ## The idea
 
-Coding agents work in a loop: observe, diagnose, act, verify. CI/CD is still
-mostly open-loop. A pipeline fails, a human opens a 40,000-line log, scrolls
-to find the one line that matters, and guesses at the cause.
+A pipeline fails, and someone opens a 40,000-line log to find the one line that
+matters. Hand that log to a model and it blames whatever looks loudest: a missing
+cache, a runner warning.
 
-We close that loop. When a run fails, ci-doctor reads the evidence, works out
-which phase broke and why, separates *your code* from *the infrastructure*,
-and hands back a verdict that a person, a script, or another agent can act on.
+ci-doctor runs when a pipeline fails. Deterministic code decides **where** the job
+broke (which phase, which step); only then does a model, if you configure one, explain
+**why**, from evidence that open, tested matchers pick out of the log. You get a
+verdict a person, a script or a coding agent can act on.
 
-It is read-only, it never fails your pipeline (always exits `0`), and it
-runs where your CI already runs.
+- **Read-only.** It never touches your code, and once analysis starts it exits `0`, so it
+  can't change your pipeline's outcome. Only a broken setup exits `1`.
+- **Useful with no LLM**, and with any: OpenAI-compatible (self-hosted too), Anthropic,
+  Azure, Bedrock, Google, Groq, Mistral, Cohere, xAI.
+- **Air-gap friendly.** No telemetry; the matcher registry can be a local copy.
+- **GitHub Actions and GitLab CI**, from one provider-neutral core.
+- **For coding agents too:** `ci-doctor mcp` serves the same diagnosis over MCP.
+
+ci-doctor is in **beta**.
 
 ## What's here
 
 | Repo | What it is |
 |------|------------|
-| [**ci-doctor**](https://github.com/ci-doctor/ci-doctor) | The analyzer: failure attribution, phase detection, and the GitHub Action. |
-| **matchers** *(soon)* | Community-maintained matcher packs: the rules that know what a failure looks like in each tool. |
-| **site** *(soon)* | The website and documentation behind [docs.cidoc.dev](https://docs.cidoc.dev). |
+| [**ci-doctor**](https://github.com/ci-doctor/ci-doctor) | The analyzer, the GitHub Action, the CLI and the MCP server, plus the docs at [docs.cidoc.dev](https://docs.cidoc.dev). |
+| [**matchers**](https://github.com/ci-doctor/matchers) | The official matcher registry: the rules that know what a failure looks like in each tool, each proven on real logs. Catalogue at [matchers.cidoc.dev](https://matchers.cidoc.dev). |
 
 ## Try it
 
+**GitHub Actions**, on a workflow triggered by `workflow_run`
+([guide](https://docs.cidoc.dev/cicd/github/)):
+
 ```yaml
-- uses: ci-doctor/ci-doctor@master
+- uses: ci-doctor/ci-doctor@v0.0.1b1
 ```
 
-Add it to a workflow that triggers on `workflow_run`. See the
-[GitHub Actions guide](https://docs.cidoc.dev/cicd/github/).
+**GitLab CI**, as a `.post` job that runs `when: on_failure`, with the image
+`docker.io/fennet/ci-doctor:0.0.1b1` ([guide](https://docs.cidoc.dev/cicd/gitlab/)).
+
+**Anywhere else:** `pip install ci-doctorr` (two r's) and `ci-doctor analyze`
+([install](https://docs.cidoc.dev/start/install/)).
 
 ## Get involved
 
-- **Bugs and ideas:** open an issue on the relevant repo.
-- **Contribute:** read each repo's `CONTRIBUTING.md`.
-- **Questions or anything else:** [support@cidoc.dev](mailto:support@cidoc.dev)
+- **Bugs, wrong diagnoses and ideas:** open an issue on [ci-doctor](https://github.com/ci-doctor/ci-doctor/issues/new/choose).
+- **A matcher for your tool, or one that misfires:** open an issue on [matchers](https://github.com/ci-doctor/matchers/issues/new/choose).
+- **Contribute:** each repo's `CONTRIBUTING.md`.
+- **Anything else:** [support@cidoc.dev](mailto:support@cidoc.dev)
